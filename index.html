@@ -122,25 +122,25 @@
                 <h3>1. Basis (Zonder extra aflossing)</h3>
                 <div class="card">
                     <strong>Annuïteit (Vaste last):</strong><br>
-                    <span id="annMaand" class="highlight">€ 0.00</span>/maand<br>
-                    Totale intrest: <span id="annIntrest">€ 0.00</span>
+                    <span id="annMaand" class="highlight">€0.00</span>/maand<br>
+                    Tot. intrest: <span id="annIntrest">€0.00</span>
                 </div>
                 <div class="card">
                     <strong>Lineair (Dalende last):</strong><br>
-                    Start: <span id="linStart" class="highlight">€ 0.00</span>/maand<br>
-                    Eind maandlast: <span id="linEind">€ 0.00</span><br>
-                    Totale intrest: <span id="linIntrest">€ 0.00</span>
+                    Start:<span id="linStart" class="highlight">€0.00</span>/maand<br>
+                    Eind: <span id="linEind">€0.00</span/maand><br>
+                    Tot. intrest: <span id="linIntrest">€0.00</span>
                 </div>
                 <h3>2. Impact Extra Aflossing</h3>
                 <div class="card card-green">
                     <strong>Scenario A: Kortere looptijd</strong><br>
                     Nieuwe looptijd: <span id="loopMaanden" class="highlight">0 maanden</span><br>
-                    <span class="success-text">Intrestbesparing: <span id="loopBesparing">€ 0.00</span></span>
+                    <span class="success-text">Intrestbesparing: <span id="loopBesparing">€0.00</span></span>
                 </div>
                 <div class="card card-green">
                     <strong>Scenario B: Lagere maandlast</strong><br>
-                    Nieuwe maandlast: <span id="lastNieuw" class="highlight">€ 0.00</span><br>
-                    <span class="success-text">Intrestbesparing: <span id="lastBesparing">€ 0.00</span></span>
+                    Nieuwe maandlast: <span id="lastNieuw" class="highlight">€0.00</span><br>
+                    <span class="success-text">Intrestbesparing: <span id="lastBesparing">€0.00</span></span>
                 </div>
             </div>
         </div>
@@ -181,8 +181,8 @@ function berekenAlles() {
     let annMaand = r > 0 ? bedrag * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1) : bedrag / n;
     let annIntrest = (annMaand * n) - bedrag;
 
-    document.getElementById('annMaand').innerText = `€ ${annMaand.toFixed(2)}`;
-    document.getElementById('annIntrest').innerText = `€ ${annIntrest.toFixed(2)}`;
+    document.getElementById('annMaand').innerText = `€${annMaand.toFixed(2)}`;
+    document.getElementById('annIntrest').innerText = `€${annIntrest.toFixed(2)}`;
     document.getElementById('maanden').innerText = "= " + n + " maanden";
 
 
@@ -195,9 +195,9 @@ function berekenAlles() {
         linIntrest += (bedrag - (m * vastKapitaal)) * r;
     }
 
-    document.getElementById('linStart').innerText = `€ ${linStart.toFixed(2)}`;
-    document.getElementById('linEind').innerText = `€ ${linEind.toFixed(2)}`;
-    document.getElementById('linIntrest').innerText = `€ ${linIntrest.toFixed(2)}`;
+    document.getElementById('linStart').innerText = `€${linStart.toFixed(2)}`;
+    document.getElementById('linEind').innerText = `€${linEind.toFixed(2)}`;
+    document.getElementById('linIntrest').innerText = `€${linIntrest.toFixed(2)}`;
 
     // 3. Extra Aflossing: Scenario A (Kortere looptijd)
     if (extraBedrag < 0) {
@@ -227,7 +227,7 @@ function berekenAlles() {
         maandA++;
     }
     document.getElementById('loopMaanden').innerText = `${maandA - 1} maanden`;
-    document.getElementById('loopBesparing').innerText = `€ ${Math.max(0, annIntrest - intrestA).toFixed(2)}`;
+    document.getElementById('loopBesparing').innerText = `€${Math.max(0, annIntrest - intrestA).toFixed(2)}`;
 
     // 4. Extra Aflossing: Scenario B (Lagere maandlast)
     let schuldB = bedrag;
@@ -250,8 +250,8 @@ function berekenAlles() {
         }
         maandB++;
     }
-    document.getElementById('lastNieuw').innerText = `€ ${actueleMaandlast.toFixed(2)}`;
-    document.getElementById('lastBesparing').innerText = `€ ${Math.max(0, annIntrest - intrestB).toFixed(2)}`;
+    document.getElementById('lastNieuw').innerText = `€${actueleMaandlast.toFixed(2)}`;
+    document.getElementById('lastBesparing').innerText = `€${Math.max(0, annIntrest - intrestB).toFixed(2)}`;
 }
   
 
