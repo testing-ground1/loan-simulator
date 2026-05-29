@@ -29,7 +29,7 @@
 
         .grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 40% 60%;
             gap: 20px;
             margin-bottom: 20px;
         }
@@ -154,7 +154,7 @@ function berekenAlles() {
         document.getElementById('bedrag').value = "";
         return;
     }
-    if (renteJaar <= 0) {
+    if (renteJaar < 0) {
         document.getElementById('rente').value = "";
         return;
     }
@@ -246,6 +246,7 @@ function berekenAlles() {
     document.getElementById('lastNieuw').innerText = `€ ${actueleMaandlast.toFixed(2)}`;
     document.getElementById('lastBesparing').innerText = `€ ${Math.max(0, annIntrest - intrestB).toFixed(2)}`;
 }
+  
 
 // Start de berekening direct bij het laden van de pagina
 berekenAlles();
