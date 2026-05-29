@@ -9,11 +9,11 @@
             font-family: Arial, sans-serif;
             background: #f4f6f9;
             color: #333;
-            padding: 20px;
+            padding: 0px;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 100%;
             margin: 0 auto;
             background: white;
             padding: 15px;
@@ -21,7 +21,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        h1, h2 {
+        h1, h3 {
             color: #2c3e50;
             border-bottom: 2px solid #ecf0f1;
             padding-bottom: 10px;
@@ -76,6 +76,14 @@
             color: #27ae60;
             font-weight: bold;
         }
+        @media only screen and (min-width: 400px) {
+            .body {
+                padding: 20px;
+            }
+            .container {
+                max-width: 800px;              
+            }
+        }
     </style>
 </head>
 <body>
@@ -85,7 +93,7 @@
         <div class="grid">
             <!-- Input Velden -->
             <div>
-                <h2>Instellingen</h2>
+                <h3>Instellingen</h3>
                 <div class="form-group">
                     <label>Leningsbedrag (€)</label>
                     <input type="number" id="bedrag" value="" min="0" step="1000" autofocus oninput="berekenAlles()">
@@ -99,8 +107,7 @@
                     <input type="number" id="jaren" value="" min="0" step="1" oninput="berekenAlles()">
                     <label id="maanden" value=""></label>
                 </div>
-
-                <h2>Extra Aflossing</h2>
+                <h3>Extra Aflossing</h3>
                 <div class="form-group">
                     <label>Extra bedrag (€)</label>
                     <input type="number" id="extraBedrag" value="" min="0" step="1000" oninput="berekenAlles()">
@@ -112,7 +119,7 @@
             </div>
             <!-- Resultaten Velden -->
             <div>
-                <h2>1. Basis (Zonder extra aflossing)</h2>
+                <h3>1. Basis (Zonder extra aflossing)</h3>
                 <div class="card">
                     <strong>Annuïteit (Vaste last):</strong><br>
                     Maandlast: <span id="annMaand" class="highlight">€ 0.00</span><br>
@@ -124,7 +131,7 @@
                     Eind maandlast: <span id="linEind">€ 0.00</span><br>
                     Totale intrest: <span id="linIntrest">€ 0.00</span>
                 </div>
-                <h2>2. Impact Extra Aflossing</h2>
+                <h3>2. Impact Extra Aflossing</h3>
                 <div class="card card-green">
                     <strong>Scenario A: Kortere looptijd</strong><br>
                     Nieuwe looptijd: <span id="loopMaanden" class="highlight">0 maanden</span><br>
