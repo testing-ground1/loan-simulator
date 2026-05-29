@@ -76,12 +76,14 @@
             color: #27ae60;
             font-weight: bold;
         }
+
         @media only screen and (min-width: 400px) {
             .body {
                 padding: 20px;
             }
+
             .container {
-                max-width: 800px;              
+                max-width: 800px;
             }
         }
     </style>
@@ -121,14 +123,14 @@
             <div>
                 <h3>1. Basis (Zonder extra aflossing)</h3>
                 <div class="card">
-                    <strong>Annuïteit (Vaste last):</strong><br>
+                    <strong>Annuïteit:</strong><br>
                     <span id="annMaand" class="highlight">€0.00</span>/maand<br>
                     Tot. intrest: <span id="annIntrest">€0.00</span>
                 </div>
                 <div class="card">
-                    <strong>Lineair (Dalende last):</strong><br>
+                    <strong>Lineair:</strong><br>
                     Start:<span id="linStart" class="highlight">€0.00</span>/maand<br>
-                    Eind: <span id="linEind">€0.00</span/maand><br>
+                    Eind: <span id="linEind">€0.00</span><br>
                     Tot. intrest: <span id="linIntrest">€0.00</span>
                 </div>
                 <h3>2. Impact Extra Aflossing</h3>
@@ -153,7 +155,7 @@ function berekenAlles() {
     const jaren = parseInt(document.getElementById('jaren').value) || 0;
     const extraBedrag = parseFloat(document.getElementById('extraBedrag').value);
     const extraJaar = parseInt(document.getElementById('extraJaar').value);
-    
+
     const n = jaren * 12;
     const r = (renteJaar / 100) / 12;
 
@@ -188,7 +190,7 @@ function berekenAlles() {
     if (ok2 == false) {
         return;
     }
-   
+
 
     if (n > 0) {
         document.getElementById('maanden').innerText = "= " + n + " maanden";
