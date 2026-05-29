@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
@@ -88,26 +88,26 @@
                 <h2>Instellingen</h2>
                 <div class="form-group">
                     <label>Leningsbedrag (€)</label>
-                    <input type="number" id="bedrag" value="" step="1000" min="0" autofocus oninput="berekenAlles()">
+                    <input type="number" id="bedrag" value="" min="0" step="1000" autofocus oninput="berekenAlles()">
                 </div>
                 <div class="form-group">
                     <label>Jaarlijkse rentevoet (%)</label>
-                    <input type="number" id="rente" value="" step="0.1" min="0" oninput="berekenAlles()">
+                    <input type="number" id="rente" value="" min="0" step="0.1" oninput="berekenAlles()">
                 </div>
                 <div class="form-group">
-                    <label>Looptijd (in jaren)</label>                   
-                    <input type="number" id="jaren" value="" min="0" oninput="berekenAlles()">
-                    <label id="maanden"></label>
+                    <label>Looptijd (in jaren)</label>
+                    <input type="number" id="jaren" value="" min="0" step="1" oninput="berekenAlles()">
+                    <label id="maanden" value=""></label>
                 </div>
 
                 <h2>Extra Aflossing</h2>
                 <div class="form-group">
                     <label>Extra bedrag (€)</label>
-                    <input type="number" id="extraBedrag" value="" step="1000" min="0" oninput="berekenAlles()">
+                    <input type="number" id="extraBedrag" value="" min="0" step="1000" oninput="berekenAlles()">
                 </div>
                 <div class="form-group">
                     <label>Na hoeveel jaar?</label>
-                    <input type="number" id="extraJaar" value="" step="1" min="0" oninput="berekenAlles()">
+                    <input type="number" id="extraJaar" value="" min="0" step="1" oninput="berekenAlles()">
                 </div>
             </div>
             <!-- Resultaten Velden -->
@@ -150,8 +150,8 @@ function berekenAlles() {
     const n = jaren * 12;
     const r = (renteJaar / 100) / 12;
 
-    if (bedrag <= 0) {       
-        document.getElementById('bedrag').value = "";       
+    if (bedrag <= 0) {
+        document.getElementById('bedrag').value = "";
         return;
     }
     if (renteJaar <= 0) {
@@ -163,13 +163,11 @@ function berekenAlles() {
         document.getElementById('maanden').innerText = "";
         return;
     }
-    if (extraBedrag <= 0) {
-        document.getElementById('extraBedrag').value = "";      
-        return;
-    }
-    if (extraJaar <= 0) {
-        document.getElementById('extraJaar').value = "";
-        return;
+
+    if (n > 0) {
+        document.getElementById('maanden').innerText = "= " + n + " maanden";
+    } else {
+        //document.getElementById('maanden').innerText = "";
     }
 
     // 1. Annuïteit berekening
@@ -178,12 +176,7 @@ function berekenAlles() {
 
     document.getElementById('annMaand').innerText = `€ ${annMaand.toFixed(2)}`;
     document.getElementById('annIntrest').innerText = `€ ${annIntrest.toFixed(2)}`;
-    if (n > 0) {
-        document.getElementById('maanden').innerText = "= " + n + " maanden";
-    } else {
-        document.getElementById('maanden').innerText = "";
-    }
-    
+    document.getElementById('maanden').innerText = "= " + n + " maanden";
 
 
     // 2. Lineaire berekening
@@ -200,6 +193,16 @@ function berekenAlles() {
     document.getElementById('linIntrest').innerText = `€ ${linIntrest.toFixed(2)}`;
 
     // 3. Extra Aflossing: Scenario A (Kortere looptijd)
+    if (extraBedrag <= 0) {
+        document.getElementById('extraBedrag').value = "";
+        return;
+    }
+    if (extraJaar <= 0) {
+        document.getElementById('extraJaar').value = "";
+        return;
+    }
+
+
     let schuldA = bedrag;
     let intrestA = 0;
     let maandA = 1;
