@@ -121,12 +121,12 @@
             <div>
                 <h3>1. Basis (Zonder extra aflossing)</h3>
                 <div class="card">
-                    <strong>Annuïteit:</strong><br>
+                    <strong>Annuïteit (Vaste last):</strong><br>
                     <span id="annMaand" class="highlight">€0.00</span>/maand<br>
                     Tot. intrest: <span id="annIntrest">€0.00</span>
                 </div>
                 <div class="card">
-                    <strong>Lineair:</strong><br>
+                    <strong>Lineair (Dalende last):</strong><br>
                     Start:<span id="linStart" class="highlight">€0.00</span>/maand<br>
                     Eind: <span id="linEind">€0.00</span/maand><br>
                     Tot. intrest: <span id="linIntrest">€0.00</span>
@@ -148,28 +148,47 @@
     <script>
 function berekenAlles() {
     // Haal inputwaarden op
-    const bedrag = parseFloat(document.getElementById('bedrag').value) || 0;
-    const renteJaar = parseFloat(document.getElementById('rente').value) || 0;
+    const bedrag = parseFloat(document.getElementById('bedrag').value);
+    const renteJaar = parseFloat(document.getElementById('rente').value);
     const jaren = parseInt(document.getElementById('jaren').value) || 0;
-    const extraBedrag = parseFloat(document.getElementById('extraBedrag').value) || 0;
-    const extraJaar = parseInt(document.getElementById('extraJaar').value) || 0;
-
+    const extraBedrag = parseFloat(document.getElementById('extraBedrag').value);
+    const extraJaar = parseInt(document.getElementById('extraJaar').value);
+    
     const n = jaren * 12;
     const r = (renteJaar / 100) / 12;
 
-    if (bedrag <= 0) {
+    let ok = true;
+    let ok2 = true;
+
+    if (bedrag <= 0 || isValidNumber(bedrag) == false) {
         document.getElementById('bedrag').value = "";
-        return;
+        ok = false;
     }
-    if (renteJaar < 0) {
+
+    if (renteJaar < 0 || isValidNumber(renteJaar) == false) {
         document.getElementById('rente').value = "";
-        return;
+        ok = false;
     }
-    if (jaren <= 0) {
+    if (jaren <= 0 || isValidNumber(jaren) == false) {
         document.getElementById('jaren').value = "";
         document.getElementById('maanden').innerText = "";
+        ok = false;
+    }
+    if (extraJaar < 0 || isValidNumber(extraJaar) == false) {
+        document.getElementById('extraJaar').value = "";
+        ok2 == false;
+    }
+    if (extraBedrag < 0 || isValidNumber(extraBedrag) == false) {
+        document.getElementById('extraBedrag').value = "";
+        ok2 == false;
+    }
+    if (ok == false) {
         return;
     }
+    if (ok2 == false) {
+        return;
+    }
+   
 
     if (n > 0) {
         document.getElementById('maanden').innerText = "= " + n + " maanden";
@@ -200,16 +219,6 @@ function berekenAlles() {
     document.getElementById('linIntrest').innerText = `€${linIntrest.toFixed(2)}`;
 
     // 3. Extra Aflossing: Scenario A (Kortere looptijd)
-    if (extraBedrag < 0) {
-        document.getElementById('extraBedrag').value = "";
-        return;
-    }
-    if (extraJaar < 0) {
-        document.getElementById('extraJaar').value = "";
-        return;
-    }
-
-
     let schuldA = bedrag;
     let intrestA = 0;
     let maandA = 1;
@@ -253,7 +262,16 @@ function berekenAlles() {
     document.getElementById('lastNieuw').innerText = `€${actueleMaandlast.toFixed(2)}`;
     document.getElementById('lastBesparing').innerText = `€${Math.max(0, annIntrest - intrestB).toFixed(2)}`;
 }
-  
+
+function isValidNumber(input) {
+    // Regex Breakdown:
+    // ^       : Start of string
+    // \d*     : Zero or more digits
+    // ([.,]\d+)? : Optional group: one dot or comma followed by one or more digits
+    // $       : End of string
+    const regex = /^\d*([.,]\d+)?$/;
+    return regex.test(input);
+}
 
 // Start de berekening direct bij het laden van de pagina
 berekenAlles();
