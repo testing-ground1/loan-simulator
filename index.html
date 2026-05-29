@@ -193,11 +193,11 @@ function berekenAlles() {
     document.getElementById('linIntrest').innerText = `€ ${linIntrest.toFixed(2)}`;
 
     // 3. Extra Aflossing: Scenario A (Kortere looptijd)
-    if (extraBedrag <= 0) {
+    if (extraBedrag < 0) {
         document.getElementById('extraBedrag').value = "";
         return;
     }
-    if (extraJaar <= 0) {
+    if (extraJaar < 0) {
         document.getElementById('extraJaar').value = "";
         return;
     }
