@@ -1,0 +1,251 @@
+﻿<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lening Simulator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #34495e;
+        }
+
+        input, select {
+            padding: 10px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .card {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .card-green {
+            border-left-color: #2ecc71;
+            background: #f4fbf7;
+        }
+
+        .highlight {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .success-text {
+            color: #27ae60;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💰 Live Lening Simulator</h1>
+
+        <div class="grid">
+            <!-- Input Velden -->
+            <div>
+                <h2>Instellingen</h2>
+                <div class="form-group">
+                    <label>Leningsbedrag (€)</label>
+                    <input type="number" id="bedrag" value="" step="1000" min="0" autofocus oninput="berekenAlles()">
+                </div>
+                <div class="form-group">
+                    <label>Jaarlijkse rentevoet (%)</label>
+                    <input type="number" id="rente" value="" step="0.1" min="0" oninput="berekenAlles()">
+                </div>
+                <div class="form-group">
+                    <label>Looptijd (in jaren)</label>                   
+                    <input type="number" id="jaren" value="" min="0" oninput="berekenAlles()">
+                    <label id="maanden"></label>
+                </div>
+
+                <h2>Extra Aflossing</h2>
+                <div class="form-group">
+                    <label>Extra bedrag (€)</label>
+                    <input type="number" id="extraBedrag" value="" step="1000" min="0" oninput="berekenAlles()">
+                </div>
+                <div class="form-group">
+                    <label>Na hoeveel jaar?</label>
+                    <input type="number" id="extraJaar" value="" step="1" min="0" oninput="berekenAlles()">
+                </div>
+            </div>
+            <!-- Resultaten Velden -->
+            <div>
+                <h2>1. Basis (Zonder extra aflossing)</h2>
+                <div class="card">
+                    <strong>Annuïteit (Vaste last):</strong><br>
+                    Maandlast: <span id="annMaand" class="highlight">€ 0.00</span><br>
+                    Totale intrest: <span id="annIntrest">€ 0.00</span>
+                </div>
+                <div class="card">
+                    <strong>Lineair (Dalende last):</strong><br>
+                    Start maandlast: <span id="linStart" class="highlight">€ 0.00</span><br>
+                    Eind maandlast: <span id="linEind">€ 0.00</span><br>
+                    Totale intrest: <span id="linIntrest">€ 0.00</span>
+                </div>
+                <h2>2. Impact Extra Aflossing</h2>
+                <div class="card card-green">
+                    <strong>Scenario A: Kortere looptijd</strong><br>
+                    Nieuwe looptijd: <span id="loopMaanden" class="highlight">0 maanden</span><br>
+                    <span class="success-text">Intrestbesparing: <span id="loopBesparing">€ 0.00</span></span>
+                </div>
+                <div class="card card-green">
+                    <strong>Scenario B: Lagere maandlast</strong><br>
+                    Nieuwe maandlast: <span id="lastNieuw" class="highlight">€ 0.00</span><br>
+                    <span class="success-text">Intrestbesparing: <span id="lastBesparing">€ 0.00</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+function berekenAlles() {
+    // Haal inputwaarden op
+    const bedrag = parseFloat(document.getElementById('bedrag').value) || 0;
+    const renteJaar = parseFloat(document.getElementById('rente').value) || 0;
+    const jaren = parseInt(document.getElementById('jaren').value) || 0;
+    const extraBedrag = parseFloat(document.getElementById('extraBedrag').value) || 0;
+    const extraJaar = parseInt(document.getElementById('extraJaar').value) || 0;
+
+    const n = jaren * 12;
+    const r = (renteJaar / 100) / 12;
+
+    if (bedrag <= 0) {       
+        document.getElementById('bedrag').value = "";       
+        return;
+    }
+    if (renteJaar <= 0) {
+        document.getElementById('rente').value = "";
+        return;
+    }
+    if (jaren <= 0) {
+        document.getElementById('jaren').value = "";
+        document.getElementById('maanden').innerText = "";
+        return;
+    }
+    if (extraBedrag <= 0) {
+        document.getElementById('extraBedrag').value = "";      
+        return;
+    }
+    if (extraJaar <= 0) {
+        document.getElementById('extraJaar').value = "";
+        return;
+    }
+
+    // 1. Annuïteit berekening
+    let annMaand = r > 0 ? bedrag * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1) : bedrag / n;
+    let annIntrest = (annMaand * n) - bedrag;
+
+    document.getElementById('annMaand').innerText = `€ ${annMaand.toFixed(2)}`;
+    document.getElementById('annIntrest').innerText = `€ ${annIntrest.toFixed(2)}`;
+    if (n > 0) {
+        document.getElementById('maanden').innerText = "= " + n + " maanden";
+    } else {
+        document.getElementById('maanden').innerText = "";
+    }
+    
+
+
+    // 2. Lineaire berekening
+    const vastKapitaal = bedrag / n;
+    const linStart = vastKapitaal + (bedrag * r);
+    const linEind = vastKapitaal + (vastKapitaal * r);
+    let linIntrest = 0;
+    for (let m = 0; m < n; m++) {
+        linIntrest += (bedrag - (m * vastKapitaal)) * r;
+    }
+
+    document.getElementById('linStart').innerText = `€ ${linStart.toFixed(2)}`;
+    document.getElementById('linEind').innerText = `€ ${linEind.toFixed(2)}`;
+    document.getElementById('linIntrest').innerText = `€ ${linIntrest.toFixed(2)}`;
+
+    // 3. Extra Aflossing: Scenario A (Kortere looptijd)
+    let schuldA = bedrag;
+    let intrestA = 0;
+    let maandA = 1;
+    const extraMaand = extraJaar * 12;
+
+    while (schuldA > 0.01 && maandA <= n) {
+        let intr = schuldA * r;
+        intrestA += intr;
+        let betaling = Math.min(annMaand, schuldA + intr);
+        schuldA -= (betaling - intr);
+
+        if (maandA === extraMaand) {
+            schuldA -= Math.min(extraBedrag, schuldA);
+        }
+        maandA++;
+    }
+    document.getElementById('loopMaanden').innerText = `${maandA - 1} maanden`;
+    document.getElementById('loopBesparing').innerText = `€ ${Math.max(0, annIntrest - intrestA).toFixed(2)}`;
+
+    // 4. Extra Aflossing: Scenario B (Lagere maandlast)
+    let schuldB = bedrag;
+    let intrestB = 0;
+    let maandB = 1;
+    let actueleMaandlast = annMaand;
+
+    while (schuldB > 0.01 && maandB <= n) {
+        let intr = schuldB * r;
+        intrestB += intr;
+        let betaling = Math.min(actueleMaandlast, schuldB + intr);
+        schuldB -= (betaling - intr);
+
+        if (maandB === extraMaand) {
+            schuldB -= Math.min(extraBedrag, schuldB);
+            if (schuldB > 0) {
+                let restMaanden = n - maandB;
+                actueleMaandlast = r > 0 ? schuldB * (r * Math.pow(1 + r, restMaanden)) / (Math.pow(1 + r, restMaanden) - 1) : schuldB / restMaanden;
+            }
+        }
+        maandB++;
+    }
+    document.getElementById('lastNieuw').innerText = `€ ${actueleMaandlast.toFixed(2)}`;
+    document.getElementById('lastBesparing').innerText = `€ ${Math.max(0, annIntrest - intrestB).toFixed(2)}`;
+}
+
+// Start de berekening direct bij het laden van de pagina
+berekenAlles();
+    </script>
+</body>
+</html>
